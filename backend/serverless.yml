@@ -1,5 +1,10 @@
 service: BookingApp
 
+plugins:
+  #- serverless-appsync-plugin
+  - serverless-pseudo-parameters
+  - serverless-iam-roles-per-function
+
 frameworkVersion: '2'
 
 provider:
@@ -8,6 +13,6 @@ provider:
   region: eu-central-1
 
 
-functions:
-  hello:
-    handler: handler.hello
+resources:
+  # DynamoDB services table
+  - ${file(resources/db_tables/services-table.yml)}
