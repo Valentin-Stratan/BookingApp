@@ -1,0 +1,25 @@
+{
+  "name": "BookingApp",
+  "version": "1.0.0",
+  "description": "assist-software individual internship booking app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Valentin-Stratan/BookingApp.git"
+  },
+  "author": "Valentin Stratan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Valentin-Stratan/BookingApp/issues"
+  },
+  "homepage": "https://github.com/Valentin-Stratan/BookingApp#readme",
+  "dependencies": {
+    "serverless-appsync-plugin": "^1.4.0",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "uuid": "^8.3.0"
+  }
+}
