@@ -1,0 +1,7 @@
+schema {
+	query: Query
+}
+
+type Query {
+	adminSignup(consumer_key: String, consumer_secret: String): String!
+}

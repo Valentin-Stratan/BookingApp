@@ -1,17 +1,36 @@
 service: BookingApp
 
 plugins:
-  #- serverless-appsync-plugin
+  - serverless-appsync-plugin
   - serverless-pseudo-parameters
   - serverless-iam-roles-per-function
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: eu-central-1
 
+functions: 
+  - ${file(resources/functions/adminSignup-function.yml)}
+
+custom:
+  # AppSync setup
+  appSync:
+    name: ${self:service}-api
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      awsRegion: eu-central-1
+      defaultAction: ALLOW
+      userPoolId: { Ref: CognitoUserPool }
+    serviceRole: "cognitoAppServiceRole"
+    # Data sources 
+    dataSources:
+      - ${file(resources/appsync/dataSources/adminSignupLambdaFunction.yml)}
+    # Mapping templates
+    mappingTemplates:
+      - ${file(resources/appsync/mappingTemplates/adminSignup.yml)}
 
 resources:
   # DynamoDB services table
@@ -23,4 +42,4 @@ resources:
   # Cognito unauth role
   - ${file(resources/cognito/cognito-unauth-role.yml)}
   # Cognito lambda service role
-  #- ${file(resources/cognito/cognito-lambda-service-role.yml)}
+  - ${file(resources/cognito/cognito-lambda-service-role.yml)}
