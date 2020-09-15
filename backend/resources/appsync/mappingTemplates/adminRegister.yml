@@ -1,6 +1,6 @@
 # Admin sign-up
 - dataSource: awsLambdaDataSource
-  type: Query
-  field: adminSignup
-  request: "adminSignup-request.txt"
+  type: Mutation
+  field: adminRegister
+  request: "adminRegister-request.txt"
   response: "common-response.txt"

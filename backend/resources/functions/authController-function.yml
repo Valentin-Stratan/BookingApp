@@ -1,0 +1,12 @@
+authController:
+  handler: authentication/auth-handler.authController
+  iamRoleStatementsName: auth-lambda-function-execution-role
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - "cognito-idp:*"
+      Resource: "*"
