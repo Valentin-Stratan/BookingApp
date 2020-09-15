@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Valentin-Stratan/BookingApp#readme",
   "dependencies": {
+    "aws-sdk": "^2.752.0",
     "serverless-appsync-plugin": "^1.4.0",
     "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-pseudo-parameters": "^2.5.0",
