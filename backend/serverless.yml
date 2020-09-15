@@ -16,3 +16,11 @@ provider:
 resources:
   # DynamoDB services table
   - ${file(resources/db_tables/services-table.yml)}
+  # Cognito setup
+  - ${file(resources/cognito/cognito-setup.yml)}
+  # Cognito auth role
+  - ${file(resources/cognito/cognito-auth-role.yml)}
+  # Cognito unauth role
+  - ${file(resources/cognito/cognito-unauth-role.yml)}
+  # Cognito lambda service role
+  #- ${file(resources/cognito/cognito-lambda-service-role.yml)}
