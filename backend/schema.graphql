@@ -1,20 +1,7 @@
 schema {
 	query: Query
-	mutation: Mutation
-}
-
-type Mutation {
-	adminRegister(first_name: String! last_name: String! email: String! password: String!): String!
 }
 
 type Query {
-	adminList: String!
-}
-
-type admin {
-	id: ID!
-	first_name: String!
-	last_name: String!
-	email: String!
-	password: String!
+	adminSignup(consumer_key: String, consumer_secret: String): String!
 }
