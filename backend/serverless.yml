@@ -31,9 +31,9 @@ custom:
       - ${file(resources/appsync/dataSources/authLambdaFunction.yml)}
     # Mapping templates
     mappingTemplates:
+      - ${file(resources/appsync/mappingTemplates/adminLogin.yml)}
       - ${file(resources/appsync/mappingTemplates/adminList.yml)}
       - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
-      - ${file(resources/appsync/mappingTemplates/adminLogin.yml)}
 
 resources:
   # Cognito setup

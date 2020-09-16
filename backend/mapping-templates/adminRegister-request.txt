@@ -4,6 +4,5 @@
     "payload": {
         "field": "adminRegister",
         "arguments":  $utils.toJson($context.arguments),
-        "handle" : $utils.toJson($context.identity.username)
     }
 }

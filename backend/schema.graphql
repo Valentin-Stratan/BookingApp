@@ -1,7 +1,3 @@
-schema {
-	query: Query
-	mutation: Mutation
-}
 
 type Mutation {
 	adminRegister(first_name: String! last_name: String! email: String! password: String!): String!
@@ -18,4 +14,9 @@ type admin {
 	last_name: String!
 	email: String!
 	password: String!
+}
+
+schema {
+	query: Query
+	mutation: Mutation
 }

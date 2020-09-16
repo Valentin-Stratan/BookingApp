@@ -13,4 +13,3 @@ appSync:
         #functionName: hello
         #lambdaFunctionArn: { Fn::GetAtt: [AuthLambdaFunction, Arn] } 
         serviceRoleArn: { Fn::GetAtt: [cognitoAppLambdaServiceRole, Arn] }
-    
