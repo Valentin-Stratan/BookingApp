@@ -13,8 +13,7 @@ provider:
   region: eu-central-1
 
 functions: 
-  # Auth controller
-  - ${file(resources/functions/authController-function.yml)}
+  - ${file(resources/functions/adminSignup-function.yml)}
 
 custom:
   # AppSync setup
@@ -28,13 +27,14 @@ custom:
     serviceRole: "cognitoAppServiceRole"
     # Data sources 
     dataSources:
-      - ${file(resources/appsync/dataSources/authLambdaFunction.yml)}
+      - ${file(resources/appsync/dataSources/adminSignupLambdaFunction.yml)}
     # Mapping templates
     mappingTemplates:
-      - ${file(resources/appsync/mappingTemplates/adminList.yml)}
-      - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminSignup.yml)}
 
 resources:
+  # DynamoDB services table
+  - ${file(resources/db_tables/services-table.yml)}
   # Cognito setup
   - ${file(resources/cognito/cognito-setup.yml)}
   # Cognito auth role
@@ -43,9 +43,3 @@ resources:
   - ${file(resources/cognito/cognito-unauth-role.yml)}
   # Cognito lambda service role
   - ${file(resources/cognito/cognito-lambda-service-role.yml)}
-
-  # ---------- DynamoDb tables ----------
-  # services table
-  - ${file(resources/db_tables/services-table.yml)}
-  # admins table
-  - ${file(resources/db_tables/admins-table.yml)}
