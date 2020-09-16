@@ -1,0 +1,2 @@
+adminSignup:
+  handler: authentication/signup-handler

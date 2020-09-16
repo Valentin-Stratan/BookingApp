@@ -1,6 +1,0 @@
-# Admin sign-up
-- dataSource: awsLambdaDataSource
-  type: Query
-  field: adminList
-  request: "adminList-request.txt"
-  response: "common-response.txt"
