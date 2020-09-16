@@ -13,19 +13,19 @@ module.exports.authController = async (event, context, callback) => {
         case 'adminRegister': {
             try {
                 // Firstname validation
-                if(event.arguments.first_name.length > 20) {
+                if (event.arguments.first_name.length > 20) {
                     let error = new Error;
                     error.message = 'Invalid firstname';
                     callback(error, null);
                 }
                 // Lastname validation
-                if(event.arguments.last_name.length > 20) {
+                if (event.arguments.last_name.length > 20) {
                     let error = new Error;
                     error.message = 'Invalid lastname';
                     callback(error, null);
                 }
                 // Email format validation
-                if(!event.arguments.email.match(mailformat)) {
+                if (!event.arguments.email.match(mailformat)) {
                     let error = new Error;
                     error.message = 'Invalid email format';
                     callback(error, null);
@@ -34,16 +34,16 @@ module.exports.authController = async (event, context, callback) => {
                 await db.scan({
                     TableName: "BookingApp-admins",
                 })
-                .promise()
-                .then(result => {
-                    for(let i =0; i < result.Items.length; i++) {
-                        if(result.Items[i].email == event.arguments.email) {
-                            let error = new Error;
-                            error.message = 'Email already in use';
-                            callback(error, null);
+                    .promise()
+                    .then(result => {
+                        for (let i = 0; i < result.Items.length; i++) {
+                            if (result.Items[i].email == event.arguments.email) {
+                                let error = new Error;
+                                error.message = 'Email already in use';
+                                callback(error, null);
+                            }
                         }
-                    }
-                })
+                    })
                 // Creating the admin in the database
                 await db.put({
                     TableName: "BookingApp-admins",
@@ -63,18 +63,28 @@ module.exports.authController = async (event, context, callback) => {
                     MessageAction: 'SUPPRESS',
                     TemporaryPassword: event.arguments.password
                 })
-                .promise()
-                .then(() => {
-                    callback(null, 'Admin registered');
-                })
-                .catch(err => callback(err, null));
+                    .promise()
+                    .then(() => {
+                        callback(null, 'Admin registered');
+                    })
+                    .catch(err => callback(err, null));
             }
             catch (error) {
                 callback(error, null);
             }
             break;
         }
-    //---------- LIST ALL ADMINS ----------
+        //---------- ADMIN LOG IN ----------
+        case 'adminLogin': {
+            try {
+
+            }
+            catch (error) {
+                callback(error, null);
+            }
+            break;
+        }
+        //---------- LIST ALL ADMINS ----------
         case 'adminList': {
             try {
                 await db.scan({
