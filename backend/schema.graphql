@@ -9,6 +9,7 @@ type Mutation {
 
 type Query {
 	adminList: String!
+	adminLogin(email: String! password: String!): String!
 }
 
 type admin {

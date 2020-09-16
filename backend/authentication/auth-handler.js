@@ -74,7 +74,31 @@ module.exports.authController = async (event, context, callback) => {
             }
             break;
         }
-    //---------- LIST ALL ADMINS ----------
+        //---------- ADMIN LOGIN ----------
+        case 'adminLogin': {
+            try {
+                const cognito = new AWS.CognitoIdentityServiceProvider();
+                await cognito.adminInitiateAuth({
+                    AuthFlow: 'ADMIN_NO_SRP_AUTH',
+                    ClientId: "5sedj9nq2je1oq5banrqqcjd57",
+                    UserPoolId: "eu-central-1_wxkQGwd6a",
+                    AuthParameters: {
+                        USERNAME: event.arguments.email,
+                        PASSWORD: event.arguments.password
+                    }
+                })
+                .promise()
+                .then(response => {
+                    callback(null, response.AuthenticationResult.AccessToken);
+                })
+                .catch(error => callback(error, null));
+            }
+            catch (error) {
+                callback(error, null);
+            }
+            break;
+        }
+        //---------- LIST ALL ADMINS ----------
         case 'adminList': {
             try {
                 await db.scan({
@@ -86,7 +110,7 @@ module.exports.authController = async (event, context, callback) => {
                     })
             }
             catch (error) {
-                callback(null, error);
+                callback(error, null);
             }
             break;
         }

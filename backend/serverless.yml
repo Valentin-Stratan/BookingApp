@@ -33,6 +33,7 @@ custom:
     mappingTemplates:
       - ${file(resources/appsync/mappingTemplates/adminList.yml)}
       - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminLogin.yml)}
 
 resources:
   # Cognito setup
