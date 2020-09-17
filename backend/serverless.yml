@@ -34,6 +34,8 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminLogin.yml)}
       - ${file(resources/appsync/mappingTemplates/adminList.yml)}
       - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminPasswordRecover.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminPasswordConfirm.yml)}
 
 resources:
   # Cognito setup
@@ -50,3 +52,5 @@ resources:
   - ${file(resources/db_tables/services-table.yml)}
   # admins table
   - ${file(resources/db_tables/admins-table.yml)}
+  # password recovery codes table
+  - ${file(resources/db_tables/recovery-codes-table.yml)}

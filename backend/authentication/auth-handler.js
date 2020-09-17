@@ -2,6 +2,8 @@
 const adminList = require('./adminList');
 const adminLogin = require('./adminLogin');
 const adminRegister = require('./adminRegister');
+const adminPasswordRecover = require('./adminPasswordRecover');
+const adminPasswordConfirm = require('./adminPasswordConfirm');
 
 module.exports.authController = async (event, context, callback) => {
     switch (event.field) {
@@ -15,6 +17,14 @@ module.exports.authController = async (event, context, callback) => {
         }
         case 'adminLogin': {
             await adminLogin.adminLogin(event, context, callback);
+            break;
+        }
+        case 'adminPasswordRecover': {
+            await adminPasswordRecover.adminPasswordRecover(event, context, callback);
+            break;
+        }
+        case 'adminPasswordConfirm': {
+            await adminPasswordConfirm.adminPasswordConfirm(event, context, callback);
             break;
         }
         default: {
