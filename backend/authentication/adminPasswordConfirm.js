@@ -2,99 +2,66 @@
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
 const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+const constants = require('../utils/utils');
 require('dotenv').config();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 async function adminPasswordConfirm(event, context, callback) {
     try {
-        // Get the recovery code from db for this user
-        const recoveryCodes = await db.scan({
-            TableName: process.env.RECOVERY_CODES_TABLE
-        }).promise();
+        const request = event.arguments;
+        const newHashedPassword = bcrypt.hashSync(request.newPassword, 10);
 
-        let recoveryEntry;
-        for (let i = 0; i < recoveryCodes.Items.length; i++) {
-            if (recoveryCodes.Items[i].code == event.arguments.confirmationCode) {
-                recoveryEntry = recoveryCodes.Items[i];
-            }
-        }
-        // Check if recovery entry exists in db
-        if (!recoveryEntry) {
+        //Check email format
+        if(!request.email.match(constants.mailFormat)) {
             let error = new Error;
-            error.message = 'User not found!!!';
+            error.message = 'Invalid email format';
             return callback(error, null);
         }
-
-        // Check if confirmation code sent by user is valid
-        if (recoveryEntry.code != event.arguments.confirmationCode) {
-            let error = new Error;
-            error.message = 'Confirmation code is not valid';
-            return callback(error, null);
-        }
-
-        //get admin for authentication
-        const admin = await db.get({
+        
+        //Check if admin with this email exists in database
+        const admin = await db.query({
             TableName: process.env.ADMINS_TABLE,
-            Key: {
-                id: recoveryEntry.admin_id,
-            },
+            IndexName: "email-index-copy",
+            KeyConditionExpression: "email = :a",
+            ExpressionAttributeValues: {
+                ":a": request.email
+            }
         }).promise();
+        
         if(!admin) {
             let error = new Error;
-            error.message = 'Failed to get admin from db';
+            error.message = 'Admin with provided email not found';
             return callback(error, null);
         }
-        //return callback(null, `${admin.Item.email}`);
-        // update the password in cognito user pool
-        const cognito = new AWS.CognitoIdentityServiceProvider();
-        const response = await cognito.adminInitiateAuth({
-            AuthFlow: 'ADMIN_NO_SRP_AUTH',
+        
+        await cognito.confirmForgotPassword({
             ClientId: process.env.CLIENT_ID,
-            UserPoolId: process.env.USER_POOL_ID,
-            AuthParameters: {
-                USERNAME: admin.Item.email,
-                PASSWORD: admin.Item.password
-            }
-        }).promise();
-        if(!response) {
-            let error = new Error;
-            error.message = 'Failed init auth admin';
-            return callback(error, null);
-        }
-
-        await cognito.changePassword({
-            AccessToken: response.AuthenticationResult.AccessToken,
-            PreviousPassword: event.arguments.oldPassword,
-            ProposedPassword: event.arguments.newPassword
+            ConfirmationCode: request.confirmationCode,
+            Password: request.newPassword,
+            Username: request.email
         }).promise();
 
         // update the password in admins table
         const result = await db.update({
             TableName: process.env.ADMINS_TABLE,
             Key: {
-                id: recoveryEntry.admin_id
+                id: admin.Items[0].id
             },
             ConditionExpression: 'attribute_exists(id)',
             UpdateExpression: 'set password = :v',
             ExpressionAttributeValues: {
-                ':v': event.arguments.newPassword
+                ':v': newHashedPassword
             },
             ReturnValue: 'ALL_NEW'
         }).promise();
 
-        if (result) {
-            // delete recovery entry in database
-            await db.delete({
-                TableName: process.env.RECOVERY_CODES_TABLE,
-                Key: {
-                    id: recoveryEntry.id
-                }
-            }).promise();
-
-            return callback(null, 'Password updated successfuly');
+        if(result) {
+            return callback(null, 'Password recover successfuly');
         }
         else {
             let error = new Error;
-            error.message = 'Error at changing password';
+            error.message = 'Invalid email format';
             return callback(error, null);
         }
     }

@@ -1,79 +1,52 @@
 'use strict';
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 const SES = new AWS.SES();
 const uuid = require('uuid');
+const constants = require('../utils/utils');
 require('dotenv').config();
-
-const mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 async function adminPasswordRecover(event, context, callback) {
     try {
+        const request = event.arguments;
         // Email format validation
-        if(!event.arguments.email.match(mailformat)) {
+        if(!request.email.match(constants.mailFormat)) {
             let error = new Error;
             error.message = 'Invalid email format';
             return callback(error, null);
         }
 
-        // Check if user with email exists in database
-        const admins = await db.scan({
+        //Check if admin with this email exists in database
+        const admin = await db.query({
             TableName: process.env.ADMINS_TABLE,
-        }).promise();
-        let admin;
-        for(let i =0; i < admins.Items.length; i++) {
-            if(admins.Items[i].email == event.arguments.email) {
-                admin = admins.Items[i];
+            IndexName: "email-index-copy",
+            KeyConditionExpression: "email = :a",
+            ExpressionAttributeValues: {
+                ":a": request.email
             }
-        }
-        if(!admin) {
+        }).promise();
+
+        if(!admin){
             let error = new Error;
-            error.message = 'Email not found';
+            error.message = 'Failed to find email in db';
             return callback(error, null);
         }
-
-        // Creating the entry in recovery codes table with the user and confirmation code
-        const recoveryCode = {
-            id: uuid.v4(),
-            admin_id: admin.id,
-            code: uuid.v4()
-        }
-
-        const result = await db.put({
-            TableName: process.env.RECOVERY_CODES_TABLE,
-            Item: recoveryCode
+        //forgotPassword
+        const response = await cognito.forgotPassword({
+            ClientId: process.env.CLIENT_ID,
+            Username: request.email
         }).promise();
 
-        if(result) {
-            // If the recovery code was successfully created, send email to the user
-            const text = `Your recovery code for email: ${event.arguments.email} is ${recoveryCode.code}`;
-            const subject = 'Admin password recovery';
-            // Email data object
-            const params = {
-                Destination: {
-                    ToAddresses: [event.arguments.email]
-                },
-                Message: {
-                    Body: {
-                        // text represents the body message with all data
-                        Text: { Data: text} 
-                    },
-                    // subject represents the subject of sent email
-                    Subject: { Data: subject}
-                },
-                // Email that we are sending from
-                Source: process.env.ADMIN_EMAIL
-            }
-
-            await SES.sendEmail(params).promise();
-
-            return callback(null, `Check you email for recovery code`);
+        if(response) {
+            return callback(null, 'Check email for confirmation code');
         }
         else {
             let error = new Error;
-            error.message = 'Error at sending the recovery-code';
+            error.message = 'Failed to send the confirmation code';
             return callback(error, null);
         }
+
     }
     catch (error) {
         return callback(error, null);

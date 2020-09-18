@@ -1,26 +1,31 @@
 'use strict';
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 const uuid = require('uuid');
+const constants = require('../utils/utils');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
-const mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 async function adminRegister(event, context, callback) {
     try {
+        const request = event.arguments;
+        const hashedPassword = bcrypt.hashSync(event.arguments.password, 10);
+
         // Firstname validation
-        if(event.arguments.first_name.length > 20) {
+        if (request.first_name.length > 20) {
             let error = new Error;
             error.message = 'Invalid firstname';
             return callback(error, null);
         }
         // Lastname validation
-        if(event.arguments.last_name.length > 20) {
+        if (request.last_name.length > 20) {
             let error = new Error;
             error.message = 'Invalid lastname';
             return callback(error, null);
         }
         // Email format validation
-        if(!event.arguments.email.match(mailformat)) {
+        if (!request.email.match(constants.mailFormat)) {
             let error = new Error;
             error.message = 'Invalid email format';
             return callback(error, null);
@@ -30,8 +35,8 @@ async function adminRegister(event, context, callback) {
         const admins = await db.scan({
             TableName: process.env.ADMINS_TABLE
         }).promise();
-        for(let i =0; i < admins.Items.length; i++) {
-            if(admins.Items[i].email == event.arguments.email) {
+        for (let i = 0; i < admins.Items.length; i++) {
+            if (admins.Items[i].email == request.email) {
                 let error = new Error;
                 error.message = 'Email already in use';
                 return callback(error, null);
@@ -42,22 +47,39 @@ async function adminRegister(event, context, callback) {
             TableName: process.env.ADMINS_TABLE,
             Item: {
                 id: uuid.v4(),
-                first_name: event.arguments.first_name,
-                last_name: event.arguments.last_name,
-                email: event.arguments.email,
-                password: event.arguments.password
+                first_name: request.first_name,
+                last_name: request.last_name,
+                email: request.email,
+                password: hashedPassword
             }
         }).promise();
-       
-        const cognito = new AWS.CognitoIdentityServiceProvider();
+
         const result = await cognito.adminCreateUser({
             UserPoolId: process.env.USER_POOL_ID,
-            Username: event.arguments.email,
+            Username: request.email,
             MessageAction: 'SUPPRESS',
-            TemporaryPassword: event.arguments.password,
-            
+            TemporaryPassword: request.password,
+            UserAttributes: [
+                {
+                    Name: "email_verified",
+                    Value: 'true'
+                },
+                {
+                    Name: "email",
+                    Value: request.email
+                }
+            ]
         }).promise();
-        if(result) {
+        if (result) {
+            // Confirm account status just for testing
+            // Will be deleted 
+            const result2 = await cognito.adminSetUserPassword({
+                Password: request.password,
+                Permanent: true,
+                Username: request.email,
+                UserPoolId: process.env.USER_POOL_ID
+            }).promise();
+            //
             return callback(null, 'Admin registered');
         }
         else {
