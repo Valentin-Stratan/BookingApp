@@ -12,18 +12,38 @@ async function adminRegister(event, context, callback) {
         const request = event.arguments;
         const hashedPassword = bcrypt.hashSync(event.arguments.password, 10);
 
-        // Firstname validation
-        if (request.first_name.length > 20) {
+        // Check if first_name is not empty
+        if (!request.first_name) {
             let error = new Error;
-            error.message = 'Invalid firstname';
+            error.message = 'First name is empty';
             return callback(error, null);
         }
-        // Lastname validation
-        if (request.last_name.length > 20) {
+        else {
+            // trim first_name and check length
+            request.first_name.trim();
+            if (request.first_name.length > 20) {
+                let error = new Error;
+                error.message = 'Invalid first name';
+                return callback(error, null);
+            }
+        }
+
+        // Check if last_name is not empty
+        if (!request.last_name) {
             let error = new Error;
-            error.message = 'Invalid lastname';
+            error.message = 'Last name is empty';
             return callback(error, null);
         }
+        else {
+            // trim last_name and check length
+            request.last_name.trim();
+            if (request.last_name.length > 20) {
+                let error = new Error;
+                error.message = 'Invalid last name';
+                return callback(error, null);
+            }
+        }
+
         // Email format validation
         if (!request.email.match(constants.mailFormat)) {
             let error = new Error;
@@ -73,7 +93,7 @@ async function adminRegister(event, context, callback) {
         if (result) {
             // Confirm account status just for testing
             // Will be deleted 
-            const result2 = await cognito.adminSetUserPassword({
+            await cognito.adminSetUserPassword({
                 Password: request.password,
                 Permanent: true,
                 Username: request.email,
