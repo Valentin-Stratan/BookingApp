@@ -4,9 +4,7 @@ authController:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:Scan
-        - dynamodb:Query
+        - dynamodb:*
         - "cognito-idp:*"
+        - ses:*
       Resource: "*"

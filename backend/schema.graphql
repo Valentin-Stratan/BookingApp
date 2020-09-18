@@ -1,6 +1,8 @@
 
 type Mutation {
 	adminRegister(first_name: String! last_name: String! email: String! password: String!): String!
+	adminPasswordRecover(email: String!): String!
+	adminPasswordConfirm(email: String! confirmationCode: String! newPassword: String!): String!
 }
 
 type Query {

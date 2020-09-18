@@ -1,19 +1,20 @@
 'use strict';
 
 const AWS = require('aws-sdk');
+const cognito = new AWS.CognitoIdentityServiceProvider();
 require('dotenv').config();
 
 async function adminLogin(event, context, callback) {
     try {
-        const cognito = new AWS.CognitoIdentityServiceProvider();
+        const request  = event.arguments;
         //const response = 
         const response = await cognito.adminInitiateAuth({
             AuthFlow: 'ADMIN_NO_SRP_AUTH',
             ClientId: process.env.CLIENT_ID,
             UserPoolId: process.env.USER_POOL_ID,
             AuthParameters: {
-                USERNAME: event.arguments.email,
-                PASSWORD: event.arguments.password
+                USERNAME: request.email,
+                PASSWORD: request.password
             }
         }).promise();
         if (response) {

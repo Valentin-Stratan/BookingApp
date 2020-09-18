@@ -1,26 +1,51 @@
 'use strict';
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 const uuid = require('uuid');
+const constants = require('../utils/utils');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
-const mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 async function adminRegister(event, context, callback) {
     try {
-        // Firstname validation
-        if(event.arguments.first_name.length > 20) {
+        const request = event.arguments;
+        const hashedPassword = bcrypt.hashSync(event.arguments.password, 10);
+
+        // Check if first_name is not empty
+        if (!request.first_name) {
             let error = new Error;
-            error.message = 'Invalid firstname';
+            error.message = 'First name is empty';
             return callback(error, null);
         }
-        // Lastname validation
-        if(event.arguments.last_name.length > 20) {
+        else {
+            // trim first_name and check length
+            request.first_name.trim();
+            if (request.first_name.length > 20) {
+                let error = new Error;
+                error.message = 'Invalid first name';
+                return callback(error, null);
+            }
+        }
+
+        // Check if last_name is not empty
+        if (!request.last_name) {
             let error = new Error;
-            error.message = 'Invalid lastname';
+            error.message = 'Last name is empty';
             return callback(error, null);
         }
+        else {
+            // trim last_name and check length
+            request.last_name.trim();
+            if (request.last_name.length > 20) {
+                let error = new Error;
+                error.message = 'Invalid last name';
+                return callback(error, null);
+            }
+        }
+
         // Email format validation
-        if(!event.arguments.email.match(mailformat)) {
+        if (!request.email.match(constants.mailFormat)) {
             let error = new Error;
             error.message = 'Invalid email format';
             return callback(error, null);
@@ -30,8 +55,8 @@ async function adminRegister(event, context, callback) {
         const admins = await db.scan({
             TableName: process.env.ADMINS_TABLE
         }).promise();
-        for(let i =0; i < admins.Items.length; i++) {
-            if(admins.Items[i].email == event.arguments.email) {
+        for (let i = 0; i < admins.Items.length; i++) {
+            if (admins.Items[i].email == request.email) {
                 let error = new Error;
                 error.message = 'Email already in use';
                 return callback(error, null);
@@ -42,22 +67,39 @@ async function adminRegister(event, context, callback) {
             TableName: process.env.ADMINS_TABLE,
             Item: {
                 id: uuid.v4(),
-                first_name: event.arguments.first_name,
-                last_name: event.arguments.last_name,
-                email: event.arguments.email,
-                password: event.arguments.password
+                first_name: request.first_name,
+                last_name: request.last_name,
+                email: request.email,
+                password: hashedPassword
             }
         }).promise();
-       
-        const cognito = new AWS.CognitoIdentityServiceProvider();
+
         const result = await cognito.adminCreateUser({
             UserPoolId: process.env.USER_POOL_ID,
-            Username: event.arguments.email,
+            Username: request.email,
             MessageAction: 'SUPPRESS',
-            TemporaryPassword: event.arguments.password,
-            
+            TemporaryPassword: request.password,
+            UserAttributes: [
+                {
+                    Name: "email_verified",
+                    Value: 'true'
+                },
+                {
+                    Name: "email",
+                    Value: request.email
+                }
+            ]
         }).promise();
-        if(result) {
+        if (result) {
+            // Confirm account status just for testing
+            // Will be deleted 
+            await cognito.adminSetUserPassword({
+                Password: request.password,
+                Permanent: true,
+                Username: request.email,
+                UserPoolId: process.env.USER_POOL_ID
+            }).promise();
+            //
             return callback(null, 'Admin registered');
         }
         else {
