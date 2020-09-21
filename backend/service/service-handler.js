@@ -1,5 +1,6 @@
 'use strict';
 const create = require('./adminServiceCreate');
+const update = require('./adminServiceUpdate');
 
 module.exports.serviceController = async (event, context, callback) => {
     switch (event.field) {
@@ -7,7 +8,8 @@ module.exports.serviceController = async (event, context, callback) => {
             await create.adminServiceCreate(event, context, callback);
             break;
         }
-        case 'adminUpdateService': {
+        case 'adminServiceUpdate': {
+            await update.adminServiceUpdate(event, context, callback);
             break;
         }
         case 'adminViewAllService': {

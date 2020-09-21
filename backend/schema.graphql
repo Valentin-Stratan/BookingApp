@@ -5,6 +5,7 @@ type Mutation {
 	adminPasswordConfirm(email: String! confirmationCode: String! newPassword: String!): String!
 
 	adminServiceCreate(name: String! description: String! duration: String! spaces: Int! price: Float!): String!
+	adminServiceUpdate(serviceId: String! name: String description: String duration: String spaces: Int price: Float): String!
 }
 
 type Query {

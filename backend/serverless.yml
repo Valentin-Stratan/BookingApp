@@ -41,6 +41,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminPasswordConfirm.yml)}
       # Admin service mapping templates
       - ${file(resources/appsync/mappingTemplates/adminServiceCreate.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminServiceUpdate.yml)}
       
 resources:
   # Cognito setup
