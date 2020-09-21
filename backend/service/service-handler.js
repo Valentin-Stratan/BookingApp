@@ -1,6 +1,7 @@
 'use strict';
 const create = require('./adminServiceCreate');
 const update = require('./adminServiceUpdate');
+const remove = require('./adminServiceDelete');
 
 module.exports.serviceController = async (event, context, callback) => {
     switch (event.field) {
@@ -15,7 +16,8 @@ module.exports.serviceController = async (event, context, callback) => {
         case 'adminViewAllService': {
             break;
         }
-        case 'adminDeleteService': {
+        case 'adminServiceDelete': {
+            await remove.adminServiceDelete(event, context, callback);
             break;
         }
         default: {

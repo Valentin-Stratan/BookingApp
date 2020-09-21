@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsLambdaDataSource
+  type: Mutation
+  field: adminServiceDelete
+  request: "adminServiceDelete-request.txt"
+  response: "common-response.txt"
