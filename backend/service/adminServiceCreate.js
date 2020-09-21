@@ -26,26 +26,28 @@ async function adminServiceCreate(event, context, callback) {
             return callback(utils.newError('Invalid price'), null);
 
         //Temporary code, used until Company controller is done
-        if(request.companyId == null || request.companyId == "") 
+        if (request.companyId == null || request.companyId == "")
             request.companyId = uuid.v4();
+
+        const service = {
+            id: uuid.v4(),
+            name: request.name,
+            description: request.description,
+            duration: request.duration,
+            spaces: request.spaces,
+            price: request.price,
+            companyId: request.companyId
+        }
 
         // creating the entry in database
         const response = await db.put({
             TableName: process.env.SERVICE_TABLE,
-            Item: {
-                id: uuid.v4(),
-                name: request.name,
-                description: request.description,
-                duration: request.duration,
-                spaces: request.spaces,
-                price: request.price,
-                companyId: request.companyId
-            }
+            Item: service
         }).promise();
 
         // check if service was creating and returning a response
         if (response) {
-            return callback(null, 'Service created successfuly');
+            return callback(null, service);
         }
         else {
             return callback(utils.newError('Unable to create the service'), null);

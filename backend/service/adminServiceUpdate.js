@@ -56,7 +56,16 @@ async function adminServiceUpdate(event, context, callback) {
             ExpressionAttributeValues: ExpressionAttributeValues
         }).promise();
         // check result and return response
-        if (response) return callback(null, 'Service updated successfuly!!!');
+        if (response) {
+            // returning the updated item
+            const service = await db.get({
+                TableName: process.env.SERVICE_TABLE,
+                Key: {
+                    id: request.serviceId
+                }
+            }).promise();
+            return callback(null, service.Item);
+        }
         else return callback(utils.newError('Unable to update this service'), null);
 
     }

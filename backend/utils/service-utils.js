@@ -21,7 +21,7 @@ module.exports = {
             else {
                 let hours = parseInt(duration.slice(0, 2));
                 let minutes = parseInt(duration.slice(3, 5));
-                if((hours > 8) || (hours == 8 && minutes > 0)) {
+                if((hours > 8) || (hours === 8 && minutes > 0)) {
                     return false;
                 }
                 else return true;
@@ -50,7 +50,7 @@ module.exports = {
             else {
                 let hours = parseInt(duration.slice(0, 2));
                 let minutes = parseInt(duration.slice(3, 5));
-                if((hours > 8) || (hours == 8 && minutes > 0)) {
+                if((hours > 8) || (hours === 8 && minutes > 0)) {
                     return false;
                 }
                 else return true;
