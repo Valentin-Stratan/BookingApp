@@ -16,9 +16,7 @@ async function adminServiceDelete(event, context, callback) {
                 id: request.serviceId
             },
             ConditionExpression: 'attribute_exists(id)'
-        }).promise().catch(err => {
-            return callback(utils.newError('Service with provided id not found!!!'), null);
-        });
+        }).promise();
 
         return callback(null, 'Service deleted successfuly');
     }
