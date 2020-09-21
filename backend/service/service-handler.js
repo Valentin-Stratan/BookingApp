@@ -2,6 +2,7 @@
 const create = require('./adminServiceCreate');
 const update = require('./adminServiceUpdate');
 const remove = require('./adminServiceDelete');
+const view = require('./adminServiceViewAll');
 
 module.exports.serviceController = async (event, context, callback) => {
     switch (event.field) {
@@ -13,7 +14,8 @@ module.exports.serviceController = async (event, context, callback) => {
             await update.adminServiceUpdate(event, context, callback);
             break;
         }
-        case 'adminViewAllService': {
+        case 'adminServiceViewAll': {
+            await view.adminServiceViewAll(event, context, callback);
             break;
         }
         case 'adminServiceDelete': {
