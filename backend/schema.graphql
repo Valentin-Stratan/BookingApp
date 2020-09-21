@@ -6,6 +6,7 @@ type Mutation {
 
 	adminServiceCreate(name: String! description: String! duration: String! spaces: Int! price: Float!): service!
 	adminServiceUpdate(serviceId: String! name: String description: String duration: String spaces: Int price: Float): service!
+	adminServiceDelete(serviceId: String!): String!
 }
 
 type Query {
