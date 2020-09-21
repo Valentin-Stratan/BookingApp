@@ -21,7 +21,7 @@ module.exports = {
             else {
                 let hours = parseInt(duration.slice(0, 2));
                 let minutes = parseInt(duration.slice(3, 5));
-                if((hours > 8) || (hours == 8 && minutes > 0)) {
+                if((hours > 8) || (hours === 8 && minutes > 0)) {
                     return false;
                 }
                 else return true;
@@ -37,5 +37,35 @@ module.exports = {
         if (!price) return false;
         else if (typeof price != "number") return false;
         else return true;
-    }
+    },
+    dynamicallyValidateDuration: function dynamicallyValidateDuration(duration) {
+        if (!duration) {
+            return true;
+        }
+        else {
+            let isValid = durationFormat.test(duration);
+            if(!isValid) {
+                return false
+            }
+            else {
+                let hours = parseInt(duration.slice(0, 2));
+                let minutes = parseInt(duration.slice(3, 5));
+                if((hours > 8) || (hours === 8 && minutes > 0)) {
+                    return false;
+                }
+                else return true;
+            }
+        }
+    },
+    dynamicallyValidateSpaces: function dynamicallyValidateSpaces(spaces) {
+        if (!spaces) return true;
+        else if (typeof spaces != "number") return false;
+        else return true;
+    },
+    dynamicallyValidatePrice: function dynamicallyValidatePrice(price) {
+        if (!price) return true;
+        else if (typeof price != "number") return false;
+        else return true;
+    },
+
 }
