@@ -1,0 +1,8 @@
+adminServiceController:
+  handler: service/service-handler.serviceController
+  iamRoleStatementsName: admin-service-lambda-function-execution-role
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "*"

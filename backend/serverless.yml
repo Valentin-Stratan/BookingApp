@@ -15,7 +15,8 @@ provider:
 functions: 
   # Auth controller
   - ${file(resources/functions/authController-function.yml)}
-
+  # Service controller
+  - ${file(resources/functions/adminServiceController-function.yml)}
 custom:
   # AppSync setup
   appSync:
@@ -29,14 +30,18 @@ custom:
     # Data sources 
     dataSources:
       - ${file(resources/appsync/dataSources/authLambdaFunction.yml)}
+      - ${file(resources/appsync/dataSources/adminServiceLambdaFunction.yml)}
     # Mapping templates
     mappingTemplates:
+      # Admin authentication mapping templates
       - ${file(resources/appsync/mappingTemplates/adminLogin.yml)}
       - ${file(resources/appsync/mappingTemplates/adminList.yml)}
       - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
       - ${file(resources/appsync/mappingTemplates/adminPasswordRecover.yml)}
       - ${file(resources/appsync/mappingTemplates/adminPasswordConfirm.yml)}
-
+      # Admin service mapping templates
+      - ${file(resources/appsync/mappingTemplates/adminServiceCreate.yml)}
+      
 resources:
   # Cognito setup
   - ${file(resources/cognito/cognito-setup.yml)}
