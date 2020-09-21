@@ -12,6 +12,7 @@ type Mutation {
 type Query {
 	adminList: String!
 	adminLogin(email: String! password: String!): String!
+	adminServiceViewAll(companyId: String!): [service]!
 }
 
 type admin {

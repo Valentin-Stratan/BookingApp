@@ -43,6 +43,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminServiceCreate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminServiceUpdate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminServiceDelete.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminServiceViewAll.yml)}
       
 resources:
   # Cognito setup

@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsLambdaDataSource
+  type: Query
+  field: adminServiceViewAll
+  request: "adminServiceViewAll-request.txt"
+  response: "common-response.txt"
