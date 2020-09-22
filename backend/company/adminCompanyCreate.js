@@ -18,7 +18,7 @@ async function adminCompanyCreate(event, context, callback) {
         if (!cUtils.validateDescription(request.description))
             return callback(utils.newError('Invalid description'), null);
         // validate admin id
-        const admin = db.get({
+        const admin = await db.get({
             TableName: process.env.ADMINS_TABLE,
             Key: {
                 id: request.adminId
@@ -42,7 +42,9 @@ async function adminCompanyCreate(event, context, callback) {
 
         // create name of file stored in S3
         let name = uuid.v4();
-        const key = `${name}.png`;
+        const companyId = uuid.v4();
+        const key = `${companyId}/${name}.png`;
+        
 
         await S3.putObject({
             Body: buffer,
@@ -55,7 +57,7 @@ async function adminCompanyCreate(event, context, callback) {
         const logoUrl = `https://${process.env.LOGO_BUCKET}.s3-eu-central-1.amazonaws.com/${key}`;
 
         const company = {
-            id: uuid.v4(),
+            id: companyId,
             name: request.name,
             description: request.description,
             adminId: request.adminId,
