@@ -15,17 +15,12 @@ module.exports.companyController = async (event, context, callback) => {
             await view.adminCompanyView(event, context, callback);
             break;
         }
-<<<<<<< HEAD
-        
-
-
-
-        case 'adminCompanyDelete': {
-            await remove.adminCompanyDelete(event, context, callback);
-=======
         case 'adminCompanyUpdate': {
             await update.adminCompanyUpdate(event, context, callback);
->>>>>>> ca1a140fb3a1f27aa79cc3c861352920a37a7913
+            break;
+        }
+        case 'adminCompanyDelete': {
+            await remove.adminCompanyDelete(event, context, callback);
             break;
         }
         default: {
