@@ -17,6 +17,15 @@ async function adminCompanyCreate(event, context, callback) {
             return callback(utils.newError('Invalid name'), null);
         if (!cUtils.validateDescription(request.description))
             return callback(utils.newError('Invalid description'), null);
+        // validate admin id
+        const admin = db.get({
+            TableName: process.env.ADMINS_TABLE,
+            Key: {
+                id: request.adminId
+            }
+        }).promise();
+        if(!admin)
+            return callback(utils.newError('Admin with provided ID not found!!!'), null);
         // check if logo is base64 encoded
         if(!cUtils.base64Format.test(logoData))
             return callback(utils.newError('Logo have to be base64 encoded!!'), null);
@@ -30,7 +39,7 @@ async function adminCompanyCreate(event, context, callback) {
 
         // get the mime-type from base64 image
         const mimeType = 'image/png';
-        
+
         // create name of file stored in S3
         let name = uuid.v4();
         const key = `${name}.png`;
@@ -49,6 +58,7 @@ async function adminCompanyCreate(event, context, callback) {
             id: uuid.v4(),
             name: request.name,
             description: request.description,
+            adminId: request.adminId,
             logo: logoUrl
         }
         // creating the entry in db
