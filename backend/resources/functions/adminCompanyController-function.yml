@@ -1,0 +1,9 @@
+adminCompanyController:
+  handler: company/company-handler.companyController
+  iamRoleStatementsName: admin-company-lambda-function-execution-role
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+        - s3:*
+      Resource: "*"

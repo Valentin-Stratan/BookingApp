@@ -7,6 +7,8 @@ type Mutation {
 	adminServiceCreate(name: String! description: String! duration: String! spaces: Int! price: Float!): service!
 	adminServiceUpdate(serviceId: String! name: String description: String duration: String spaces: Int price: Float): service!
 	adminServiceDelete(serviceId: String!): String!
+
+	adminCompanyCreate(name: String! description: String! logo: String!): company!
 }
 
 type Query {
@@ -31,6 +33,13 @@ type service {
 	spaces: String!
 	price: String!
 	companyId: ID
+}
+
+type company {
+	id: ID!
+	name: String!
+	description: String!
+	logo: String!
 }
 
 schema {
