@@ -1,10 +1,15 @@
 'use strict';
 const create = require('./adminCompanyCreate');
+const view = require('./adminCompanyView');
 
 module.exports.companyController = async (event, context, callback) => {
     switch (event.field) {
         case 'adminCompanyCreate': {
             await create.adminCompanyCreate(event, context, callback);
+            break;
+        }
+        case 'adminCompanyView': {
+            await view.adminCompanyView(event, context, callback);
             break;
         }
         default: {
