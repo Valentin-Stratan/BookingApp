@@ -11,15 +11,6 @@ module.exports = {
         else return true;
     },
 
-    dynamicallyValidateName: function dynamicallyValidateName(name) {
-        if (!name) return true;
-        else return true;
-    },
-    dynamicallyValidateDescription: function dynamicallyValidateDescription(description) {
-        if (!description) return true;
-        else return true;
-    },
-
     getKeyIndex: function getKeyIndex(url) {
         let length = url.length, i = -1;
         let n = 3;

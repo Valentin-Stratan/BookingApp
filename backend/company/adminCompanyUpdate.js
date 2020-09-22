@@ -18,7 +18,7 @@ async function adminCompanyUpdate(event, context, callback) {
                 id: request.companyId
             }
         }).promise();
-        if(!company)
+        if (!company)
             return callback(utils.newError('Company with provided ID not found!!!'), null);
 
         // validate logo
@@ -29,30 +29,30 @@ async function adminCompanyUpdate(event, context, callback) {
             if (!logoData.includes(cUtils.logoMimeTypes)) {
                 return callback(utils.newError('Wrong logo mime type'), null);
             }
+
+            // getting the url which include the s3 object key
+            const url = company.Item.logo;
+            // getting the starting index of s3 object key
+            const startingIndex = cUtils.getKeyIndex(url);
+            // getting the key
+            const key = url.substring(startingIndex + 1);
+            // creating the buffer
+            const buffer = Buffer.from(logoData, 'base64');
+
+            // putObject updates data at key destination
+            await S3.putObject({
+                Body: buffer,
+                Key: key,
+                ContentType: 'image/png',
+                Bucket: process.env.LOGO_BUCKET,
+                ACL: 'public-read'
+            }).promise();
         }
-
-        // getting the url which include the s3 object key
-        const url = company.Item.logo;
-        // getting the starting index of s3 object key
-        const startingIndex = cUtils.getKeyIndex(url);
-        // getting the key
-        const key = url.substring(startingIndex+1);
-        // creating the buffer
-        const buffer = Buffer.from(logoData, 'base64');
-
-        // putObject updates data at key destination
-        await S3.putObject({
-            Body: buffer,
-            Key: key,
-            ContentType: 'image/png',
-            Bucket: process.env.LOGO_BUCKET,
-            ACL: 'public-read'
-        }).promise();
 
         // creating objects for dynamic dynamodb update
         let updateExpression = 'set';
-        let ExpressionAttributeNames = {};
-        let ExpressionAttributeValues = {};
+        const ExpressionAttributeNames = {};
+        const ExpressionAttributeValues = {};
 
         for (const property in request) {
             if (property != 'companyId' && property != 'logo') {
