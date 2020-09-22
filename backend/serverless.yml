@@ -51,6 +51,7 @@ custom:
       # Admin company mapping templates
       - ${file(resources/appsync/mappingTemplates/adminCompanyCreate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminCompanyView.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminCompanyUpdate.yml)}
       
 resources:
   # Cognito setup

@@ -9,6 +9,7 @@ type Mutation {
 	adminServiceDelete(serviceId: String!): String!
 
 	adminCompanyCreate(name: String! description: String! logo: String! adminId: String!): company!
+	adminCompanyUpdate(companyId: ID! name: String description: String logo: String ): String!
 }
 
 type Query {

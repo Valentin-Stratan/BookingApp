@@ -1,6 +1,7 @@
 'use strict';
 const create = require('./adminCompanyCreate');
 const view = require('./adminCompanyView');
+const update = require('./adminCompanyUpdate');
 
 module.exports.companyController = async (event, context, callback) => {
     switch (event.field) {
@@ -10,6 +11,10 @@ module.exports.companyController = async (event, context, callback) => {
         }
         case 'adminCompanyView': {
             await view.adminCompanyView(event, context, callback);
+            break;
+        }
+        case 'adminCompanyUpdate': {
+            await update.adminCompanyUpdate(event, context, callback);
             break;
         }
         default: {
