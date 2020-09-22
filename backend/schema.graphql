@@ -16,7 +16,7 @@ type Query {
 	adminLogin(email: String! password: String!): String!
 	adminServiceViewAll(companyId: String!): [service]!
 
-	adminCompanyView(adminId: ID!): String!
+	adminCompanyView(adminId: ID!): [company]!
 }
 
 type admin {
