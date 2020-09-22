@@ -2,6 +2,8 @@
 const create = require('./adminCompanyCreate');
 const view = require('./adminCompanyView');
 
+const remove = require('./adminCompanyDelete');
+
 module.exports.companyController = async (event, context, callback) => {
     switch (event.field) {
         case 'adminCompanyCreate': {
@@ -10,6 +12,14 @@ module.exports.companyController = async (event, context, callback) => {
         }
         case 'adminCompanyView': {
             await view.adminCompanyView(event, context, callback);
+            break;
+        }
+        
+
+
+
+        case 'adminCompanyDelete': {
+            await remove.adminCompanyDelete(event, context, callback);
             break;
         }
         default: {
