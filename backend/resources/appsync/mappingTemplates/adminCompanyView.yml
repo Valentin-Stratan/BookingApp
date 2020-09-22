@@ -1,6 +1,6 @@
 # Admin sign-up
 - dataSource: awsCompanyLambdaDataSource
-  type: Mutation
-  field: adminCompanyCreate
-  request: "adminCompanyCreate-request.txt"
+  type: Query
+  field: adminCompanyView
+  request: "adminCompanyView-request.txt"
   response: "common-response.txt"

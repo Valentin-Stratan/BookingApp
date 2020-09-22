@@ -1,5 +1,5 @@
 # Admin sign-up
-- dataSource: awsLambdaDataSource
+- dataSource: awsServiceLambdaDataSource
   type: Mutation
   field: adminServiceCreate
   request: "adminServiceCreate-request.txt"
