@@ -1,35 +1,12 @@
-const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
+const utils = require('./utils');
 module.exports = {
     validateEmail: function validateEmail(email) {
-        if (!email)
-            return false;
-        else {
-            let isValid = mailFormat.test(email);
-            if (!isValid)
-                return false;
-            else
-                return true;
-        }
+        return (!email ? false : (!utils.mailFormat.test(email) ? false : true));
     },
     validatePhone: function validatePhone(phone) {
-        if(!phone)
-            return false;
-        else {
-            if(phone.length > 16)
-                return false;
-            else 
-                return true;
-        }
+       return (!phone ? false : (phone.length > 16 ? false : true));
     },
     validateName: function validateName(name) {
-        if(!name)
-            return false;
-        else {
-            if(name.length > 40)
-                return false;
-            else 
-                return true;
-        }
+        return (!name ? false : (name.length > 40 ? false : true));
     }
 }
