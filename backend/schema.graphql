@@ -4,13 +4,15 @@ type Mutation {
 	adminPasswordRecover(email: String!): String!
 	adminPasswordConfirm(email: String! confirmationCode: String! newPassword: String!): String!
 
-	adminServiceCreate(name: String! description: String! duration: String! spaces: Int! price: Float!): service!
+	adminServiceCreate(companyId: ID! name: String! description: String! duration: String! spaces: Int! price: Float!): service!
 	adminServiceUpdate(serviceId: String! name: String description: String duration: String spaces: Int price: Float): service!
 	adminServiceDelete(serviceId: String!): String!
 
 	adminCompanyCreate(name: String! description: String! logo: String! adminId: String!): company!
 	adminCompanyUpdate(companyId: ID! name: String description: String logo: String ): company!
 	adminCompanyDelete(companyId: ID! ): String!
+
+	publicBookingCreate(companyId: ID serviceId: ID slot: String clientName: String clientPhone: String clientEmail: String): String!
 }
 
 type Query {

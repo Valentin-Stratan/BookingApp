@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsBookingLambdaDataSource
+  type: Mutation
+  field: publicBookingCreate
+  request: "publicBookingCreate-request.txt"
+  response: "common-response.txt"

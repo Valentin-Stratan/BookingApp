@@ -19,6 +19,8 @@ functions:
   - ${file(resources/functions/adminServiceController-function.yml)}
   # Company controller
   - ${file(resources/functions/adminCompanyController-function.yml)}
+  # Booking controller
+  - ${file(resources/functions/publicBookingController-function.yml)}
 
 custom:
   # AppSync setup
@@ -35,6 +37,7 @@ custom:
       - ${file(resources/appsync/dataSources/authLambdaFunction.yml)}
       - ${file(resources/appsync/dataSources/adminServiceLambdaFunction.yml)}
       - ${file(resources/appsync/dataSources/adminCompanyLambdaFunction.yml)}
+      - ${file(resources/appsync/dataSources/publicBookingLambdaFunction.yml)}
     # Mapping templates
     mappingTemplates:
       # Admin authentication mapping templates
@@ -53,6 +56,8 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminCompanyView.yml)}
       - ${file(resources/appsync/mappingTemplates/adminCompanyUpdate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminCompanyDelete.yml)}
+      # Public booking mapping templates
+      - ${file(resources/appsync/mappingTemplates/publicBookingCreate.yml)}
       
 resources:
   # Cognito setup
@@ -73,6 +78,8 @@ resources:
   - ${file(resources/db_tables/recovery-codes-table.yml)}
   # companies table
   - ${file(resources/db_tables/company-table.yml)}
+  # bookings table 
+  - ${file(resources/db_tables/booking-table.yml)}
 
   # ---------- S3 bucket ----------
   - ${file(resources/s3-buckets/company-logo-bucket.yml)}

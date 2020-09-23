@@ -1,0 +1,28 @@
+Resources:
+  bookingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:service}-bookings
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: serviceId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: booking-serviceId-index
+          KeySchema:
+            - AttributeName: serviceId
+              KeyType: HASH
+            - AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL 
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
