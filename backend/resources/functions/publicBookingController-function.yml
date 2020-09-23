@@ -1,0 +1,8 @@
+publicBookingController:
+  handler: booking/booking-handler.bookingController
+  iamRoleStatementsName: public-booking-lambda-function-execution-role
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "*"
