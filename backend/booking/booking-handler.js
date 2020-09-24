@@ -2,6 +2,7 @@
 const create = require('./publicBookingCreate');
 const view = require('./adminBookingView');
 const viewAll = require('./adminBookingViewAll');
+const remove = require('./publicBookingDelete');
 
 module.exports.bookingController = async (event, context, callback) => {
     switch (event.field) {
@@ -15,6 +16,10 @@ module.exports.bookingController = async (event, context, callback) => {
         }
         case 'adminBookingViewAll': {
             await viewAll.adminBookingViewAll(event, context, callback);
+            break;
+        }
+        case 'publicBookingDelete': {
+            await remove.publicBookingDelete(event, context, callback);
             break;
         }
         default: {
