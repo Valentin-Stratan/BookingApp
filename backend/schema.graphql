@@ -34,7 +34,7 @@ type bookingViewAll {
 
 type bookingView {
 	company: company!
-	services: [service]!
+	bookings: [booking]!
 }
 
 type admin {
@@ -43,6 +43,16 @@ type admin {
 	last_name: String!
 	email: String!
 	password: String!
+}
+
+type booking {
+	id: ID!
+	clientEmail: String!
+	clientName: String!
+	clientPhone: String!
+	companyId: ID!
+	serviceId: ID!
+	slot: String!
 }
 
 type service {

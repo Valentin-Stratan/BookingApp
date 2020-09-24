@@ -36,8 +36,8 @@ async function adminBookingViewAll(event, context, callback) {
             // getting all the services of the companies
             for (let i = 0; i < companies.Items.length; i++) {
                 const response = await db.query({
-                    TableName: process.env.SERVICE_TABLE,
-                    IndexName: "companyId-index",
+                    TableName: process.env.BOOKING_TABLE,
+                    IndexName: "booking-companyId-index",
                     KeyConditionExpression: "companyId = :a",
                     ExpressionAttributeValues: {
                         ":a": companies.Items[i].id
@@ -46,7 +46,7 @@ async function adminBookingViewAll(event, context, callback) {
                 // variable for storing data for a specific company of admin
                 const bookingView = {};
                 bookingView.company = companies.Items[i];
-                bookingView.services = response.Items;
+                bookingView.bookings = response.Items;
                 // pushing company &&services data to array
                 bookingViewList.push(bookingView);
             }
