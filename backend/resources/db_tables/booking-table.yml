@@ -25,7 +25,7 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
-        - IndexName: booking-companyId-index
+        - IndexName: booking-test-companyId-index
           KeySchema:
             - AttributeName: companyId
               KeyType: HASH

@@ -13,7 +13,7 @@ type Mutation {
 	adminCompanyDelete(companyId: ID! ): String!
 
 	publicBookingCreate(companyId: ID serviceId: ID slot: String clientName: String clientPhone: String clientEmail: String): String!
-	
+	publicBookingDelete(bookingId: ID!): String!
 }
 
 type Query {

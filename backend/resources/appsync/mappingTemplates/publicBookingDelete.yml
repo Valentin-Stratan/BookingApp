@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsBookingLambdaDataSource
+  type: Mutation
+  field: publicBookingDelete
+  request: "publicBookingDelete-request.txt"
+  response: "common-response.txt"

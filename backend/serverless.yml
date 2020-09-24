@@ -60,6 +60,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/publicBookingCreate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminBookingView.yml)}
       - ${file(resources/appsync/mappingTemplates/adminBookingViewAll.yml)}
+      - ${file(resources/appsync/mappingTemplates/publicBookingDelete.yml)}
       
 resources:
   # Cognito setup
