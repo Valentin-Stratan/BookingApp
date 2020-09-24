@@ -13,6 +13,7 @@ type Mutation {
 	adminCompanyDelete(companyId: ID! ): String!
 
 	publicBookingCreate(companyId: ID serviceId: ID slot: String clientName: String clientPhone: String clientEmail: String): String!
+	
 }
 
 type Query {
@@ -21,6 +22,19 @@ type Query {
 	adminServiceViewAll(companyId: String!): [service]!
 
 	adminCompanyView(adminId: ID!): [company]!
+
+	adminBookingView(adminId: ID!): [bookingView]!
+	adminBookingViewAll: [bookingViewAll]
+}
+
+type bookingViewAll {
+	admin: admin
+	bookingview: [bookingView]
+}
+
+type bookingView {
+	company: company!
+	bookings: [booking]!
 }
 
 type admin {
@@ -29,6 +43,16 @@ type admin {
 	last_name: String!
 	email: String!
 	password: String!
+}
+
+type booking {
+	id: ID!
+	clientEmail: String!
+	clientName: String!
+	clientPhone: String!
+	companyId: ID!
+	serviceId: ID!
+	slot: String!
 }
 
 type service {

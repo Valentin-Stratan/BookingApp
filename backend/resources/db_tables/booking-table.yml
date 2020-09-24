@@ -8,6 +8,8 @@ Resources:
           AttributeType: S
         - AttributeName: serviceId
           AttributeType: S
+        - AttributeName: companyId
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -15,6 +17,17 @@ Resources:
         - IndexName: booking-serviceId-index
           KeySchema:
             - AttributeName: serviceId
+              KeyType: HASH
+            - AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL 
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: booking-companyId-index
+          KeySchema:
+            - AttributeName: companyId
               KeyType: HASH
             - AttributeName: id
               KeyType: RANGE

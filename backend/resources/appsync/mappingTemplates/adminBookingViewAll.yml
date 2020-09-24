@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsBookingLambdaDataSource
+  type: Query
+  field: adminBookingViewAll
+  request: "adminBookingViewAll-request.txt"
+  response: "common-response.txt"
