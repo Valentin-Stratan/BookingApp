@@ -95,12 +95,12 @@ async function publicBookingCreate(event, context, callback) {
         if(busySpaces === service.Item.spaces)
             return callback(utils.newError('All spaces are busy'), null);
 
-
+        const newBookingId = uuid.v4();
         // create the booking in db
         const response = await db.put({
             TableName: process.env.BOOKING_TABLE,
             Item: {
-                id: uuid.v4(),
+                id: newBookingId,
                 companyId: request.companyId,
                 serviceId: request.serviceId,
                 slot: date.toString(),
@@ -109,6 +109,9 @@ async function publicBookingCreate(event, context, callback) {
                 clientPhone: request.clientPhone
             }
         }).promise();
+
+        // send email with booking id
+        await utils.sendMail(request.clientEmail, `Your booking id is: ${newBookingId}` , 'Booking info');
         
         if(response)
             return callback(null, `Booking created successfully on date: ${date}`);
