@@ -5,4 +5,5 @@ publicBookingController:
     - Effect: "Allow"
       Action:
         - dynamodb:*
+        - ses:*
       Resource: "*"
