@@ -12,6 +12,24 @@ async function adminServiceCreate(event, context, callback) {
         // validation service name
         if (!sUtils.validateName(request.name))
             return callback(utils.newError('Invalid name'), null);
+
+        // check if service with same name already exists
+        const result = await db.query({
+            TableName: process.env.SERVICE_TABLE,
+            IndexName: "name-index",
+            KeyConditionExpression: "#cn = :a",
+            ExpressionAttributeNames: {
+                "#cn": "name"
+            },
+            ExpressionAttributeValues: {
+                ":a": request.name
+            }
+        }).promise();
+        // return error if name is already in use
+        if(result.Items.length != 0) {
+            return callback(utils.newError('Service name already in use'), null);
+        }
+
         // validation service description
         if (!sUtils.validateDescription(request.description))
             return callback(utils.newError('Invalid description'), null);
@@ -25,9 +43,15 @@ async function adminServiceCreate(event, context, callback) {
         if (!sUtils.validatePrice(request.price))
             return callback(utils.newError('Invalid price'), null);
 
-        //Temporary code, used until Company controller is done
-        if (request.companyId == null || request.companyId == "")
-            request.companyId = uuid.v4();
+        // validate company id
+        const company = await db.get({
+            TableName: process.env.COMPANY_TABLE,
+            Key: {
+                id: request.companyId
+            }
+        }).promise();
+        if (!company.Item)
+            return callback(utils.newError('Company with provided ID not found!!!'), null);
 
         const service = {
             id: uuid.v4(),

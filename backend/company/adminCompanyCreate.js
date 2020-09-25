@@ -13,6 +13,23 @@ async function adminCompanyCreate(event, context, callback) {
         const logoData = event.arguments.logo;
         if (!cUtils.validateName(request.name))
             return callback(utils.newError('Invalid name'), null);
+        // check if company with same name already exists
+        const result = await db.query({
+            TableName: process.env.COMPANY_TABLE,
+            IndexName: "name-index",
+            KeyConditionExpression: "#cn = :a",
+            ExpressionAttributeNames: {
+                "#cn": "name"
+            },
+            ExpressionAttributeValues: {
+                ":a": request.name
+            }
+        }).promise();
+        // return error if name is already in use
+        if(result.Items.length != 0) {
+            return callback(utils.newError('Company name already in use'), null);
+        }
+
         if (!cUtils.validateDescription(request.description))
             return callback(utils.newError('Invalid description'), null);
         // validate admin id
@@ -22,13 +39,13 @@ async function adminCompanyCreate(event, context, callback) {
                 id: request.adminId
             }
         }).promise();
-        if(!admin)
+        if (!admin.Item)
             return callback(utils.newError('Admin with provided ID not found!!!'), null);
         // check if logo is base64 encoded
-        if(!cUtils.base64Format.test(logoData))
+        if (!cUtils.base64Format.test(logoData))
             return callback(utils.newError('Logo have to be base64 encoded!!'), null);
         // check if base64 image have apropriate mime type(png)
-        if(!logoData.includes(cUtils.logoMimeTypes)) {
+        if (!logoData.includes(cUtils.logoMimeTypes)) {
             return callback(utils.newError('Wrong logo mime type'), null);
         }
 
@@ -42,7 +59,7 @@ async function adminCompanyCreate(event, context, callback) {
         let name = uuid.v4();
         const companyId = uuid.v4();
         const key = `${companyId}/${name}.png`;
-        
+
 
         await S3.putObject({
             Body: buffer,
