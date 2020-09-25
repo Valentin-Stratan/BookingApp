@@ -8,6 +8,8 @@ Resources:
           AttributeType: S
         - AttributeName: adminId
           AttributeType: S
+        - AttributeName: name
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -15,6 +17,17 @@ Resources:
         - IndexName: adminId-index
           KeySchema:
             - AttributeName: adminId
+              KeyType: HASH
+            - AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL 
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: name-index
+          KeySchema:
+            - AttributeName: name
               KeyType: HASH
             - AttributeName: id
               KeyType: RANGE
