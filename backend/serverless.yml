@@ -46,6 +46,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminRegister.yml)}
       - ${file(resources/appsync/mappingTemplates/adminPasswordRecover.yml)}
       - ${file(resources/appsync/mappingTemplates/adminPasswordConfirm.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminResetPassword.yml)}
       # Admin service mapping templates
       - ${file(resources/appsync/mappingTemplates/adminServiceCreate.yml)}
       - ${file(resources/appsync/mappingTemplates/adminServiceUpdate.yml)}
