@@ -4,6 +4,7 @@ const adminLogin = require('./adminLogin');
 const adminRegister = require('./adminRegister');
 const adminPasswordRecover = require('./adminPasswordRecover');
 const adminPasswordConfirm = require('./adminPasswordConfirm');
+const adminReset = require('./adminResetPassword');
 
 module.exports.authController = async (event, context, callback) => {
     switch (event.field) {
@@ -27,10 +28,13 @@ module.exports.authController = async (event, context, callback) => {
             await adminPasswordConfirm.adminPasswordConfirm(event, context, callback);
             break;
         }
+        case 'adminResetPassword': {
+            await adminReset.adminResetPassword(event, context, callback);
+            break;
+        }
         default: {
             callback(`Unknown field, unable to resolve ${event.field}`, null);
             break;
         }
-        
     }
 };
