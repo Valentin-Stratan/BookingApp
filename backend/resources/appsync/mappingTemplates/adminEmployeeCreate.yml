@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsEmployeeLambdaDataSource
+  type: Mutation
+  field: adminEmployeeCreate
+  request: "adminEmployeeCreate-request.txt"
+  response: "common-response.txt"
