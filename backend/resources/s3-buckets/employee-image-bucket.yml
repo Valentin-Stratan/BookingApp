@@ -1,0 +1,6 @@
+Resources:
+  employeeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: s3-employee-bucket
+      AccessControl: PublicRead
