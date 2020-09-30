@@ -67,6 +67,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/publicBookingDelete.yml)}
       # Admin Employee mapping templates
       - ${file(resources/appsync/mappingTemplates/adminEmployeeCreate.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminEmployeeUpdate.yml)}
       
 resources:
   # Cognito setup
