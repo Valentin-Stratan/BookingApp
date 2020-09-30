@@ -29,6 +29,8 @@ type Query {
 
 	adminBookingView(adminId: ID!): [bookingView]!
 	adminBookingViewAll: [bookingViewAll]
+
+	publicEmployeeView(serviceId: ID!): [employee]!
 }
 
 type bookingViewAll {

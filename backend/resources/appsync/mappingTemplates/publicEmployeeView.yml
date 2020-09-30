@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsEmployeeLambdaDataSource
+  type: Query 
+  field: publicEmployeeView
+  request: "publicEmployeeView-request.txt"
+  response: "common-response.txt"
