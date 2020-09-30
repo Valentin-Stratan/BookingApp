@@ -16,8 +16,8 @@ type Mutation {
 	publicBookingCreate(companyId: ID serviceId: ID slot: String clientName: String clientPhone: String clientEmail: String): String!
 	publicBookingDelete(bookingId: ID!): String!
 
-	adminEmployeeCreate(serviceId: ID! first_name: String! last_name: String! profile_image: String! start_time: String! finish_time: String!): employee!
-	adminEmployeeUpdate(employeeId: ID! serviceId: ID first_name: String last_name: String profile_image: String start_time: String finish_time: String): employee!
+	adminEmployeeUpdate(employeeId: ID! serviceId: ID first_name: String last_name: String email: String profile_image: String start_time: String finish_time: String): String!
+	adminEmployeeCreate(serviceId: ID! first_name: String! last_name: String! email: String! profile_image: String! start_time: String! finish_time: String!): employee!
 }
 
 type Query {
@@ -45,6 +45,7 @@ type employee {
 	id: ID!
 	first_name: String!
 	last_name: String!
+	email: String!
 	companyId: ID!
 	serviceId: ID!
 	profile_image: String!

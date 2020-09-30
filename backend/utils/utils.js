@@ -29,5 +29,13 @@ module.exports = {
         }
 
         await SES.sendEmail(params).promise();
+    },
+
+    objIsEmpty: function objIsEmpty(obj) {
+        for(let key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
     }
 }

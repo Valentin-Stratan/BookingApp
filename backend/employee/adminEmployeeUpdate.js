@@ -6,6 +6,8 @@ const S3 = new AWS.S3();
 const uuid = require('uuid');
 const utils = require('../utils/utils');
 const eUtils = require('../utils/employee-utils');
+const bUtils = require('../utils/booking-utils');
+const cUtils = require('../utils/company-utils');
 require('dotenv').config();
 
 async function adminEmployeeUpdate(event, context, callback) {
@@ -21,9 +23,15 @@ async function adminEmployeeUpdate(event, context, callback) {
             }
         }).promise();
 
+        // If employee already have bookings he cant be updated
+        // This feature will be added when publicBookingCreate will be modified to use employees
+
         if (!employee.Item) {
             return callback(utils.newError('Employee with provided ID not found'), null);
         }
+        // validate email
+        if (request.email && !bUtils.validateEmail(request.email))
+            return callback(utils.newError('Invalid email'), null);
 
         // validate first name
         if (request.first_name && request.first_name.length > 20)
@@ -49,7 +57,7 @@ async function adminEmployeeUpdate(event, context, callback) {
                     id: request.serviceId
                 }
             }).promise();
-            if(!(employee.Item.companyId === newService.Item.companyId)) {
+            if (!(employee.Item.companyId === newService.Item.companyId)) {
                 return callback(utils.newError('Invalid service ID'), null);
             }
         }
@@ -68,7 +76,7 @@ async function adminEmployeeUpdate(event, context, callback) {
         if (request.finish_time && !eUtils.validateFinishTime(request.finish_time, employee.Item.start_time, service.Item.duration))
             return callback(utils.newError('Invalid finish time'), null);
 
-        if(profileImageData) {
+        if (profileImageData) {
             // getting the url which include the s3 object key
             const url = employee.Item.profile_image;
             // getting the starting index of s3 object key
@@ -102,26 +110,22 @@ async function adminEmployeeUpdate(event, context, callback) {
         }
         updateExpression = updateExpression.slice(0, -1);
 
-        // updating the company
-        const response = await db.update({
-            TableName: process.env.EMPLOYEE_TABLE,
-            Key: {
-                id: request.employeeId
-            },
-            UpdateExpression: updateExpression,
-            ExpressionAttributeNames: ExpressionAttributeNames,
-            ExpressionAttributeValues: ExpressionAttributeValues,
-            ReturnValues: "ALL_NEW"
-        }).promise();
-        // check result and return response
-        if (response) {
-            // returning the updated item
-            return callback(null, response.Attributes);
+        // check if object expression attribute names is not empty
+        if (!utils.objIsEmpty(ExpressionAttributeNames)) {
+            // updating the company
+            await db.update({
+                TableName: process.env.EMPLOYEE_TABLE,
+                Key: {
+                    id: request.employeeId
+                },
+                UpdateExpression: updateExpression,
+                ExpressionAttributeNames: ExpressionAttributeNames,
+                ExpressionAttributeValues: ExpressionAttributeValues,
+                ReturnValues: "ALL_NEW"
+            }).promise();
         }
-        else return callback(utils.newError('Unable to update this employee'), null);
-
-
-
+            
+        return callback(null, 'Employee updated');
     }
     catch (error) {
         return callback(error, null);
