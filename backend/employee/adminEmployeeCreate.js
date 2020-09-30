@@ -5,7 +5,7 @@ const db = new AWS.DynamoDB.DocumentClient();
 const S3 = new AWS.S3();
 const uuid = require('uuid');
 const utils = require('../utils/utils');
-
+const bUtils = require('../utils/booking-utils');
 const eUtils = require('../utils/employee-utils');
 
 require('dotenv').config(); 
@@ -25,7 +25,10 @@ async function adminEmployeeCreate(event, context, callback) {
 
         if(!service.Item)
             return callback(utils.newError('Service with provided ID not found'), null);
-
+        
+        // validate email
+        if(!bUtils.validateEmail(request.email))
+            return callback(utils.newError('Invalid email'), null);
         // validate first name
         if(!eUtils.validateFirstname(request.first_name))
             return callback(utils.newError('Invalid first name'), null);
@@ -74,6 +77,7 @@ async function adminEmployeeCreate(event, context, callback) {
             id: uuid.v4(),
             first_name: request.first_name,
             last_name: request.last_name,
+            email: request.email,
             serviceId: request.serviceId,
             companyId: service.Item.companyId,
             start_time: request.start_time,
