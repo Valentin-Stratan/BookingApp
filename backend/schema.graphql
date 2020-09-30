@@ -31,6 +31,7 @@ type Query {
 	adminBookingViewAll: [bookingViewAll]
 
 	publicEmployeeView(serviceId: ID!): [employee]!
+	adminEmployeeView(companyId: ID!): [employee]!
 }
 
 type bookingViewAll {
