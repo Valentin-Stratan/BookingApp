@@ -70,6 +70,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminEmployeeUpdate.yml)}
       - ${file(resources/appsync/mappingTemplates/publicEmployeeView.yml)}
       - ${file(resources/appsync/mappingTemplates/adminEmployeeView.yml)}
+      - ${file(resources/appsync/mappingTemplates/adminEmployeeDelete.yml)}
       
 resources:
   # Cognito setup
