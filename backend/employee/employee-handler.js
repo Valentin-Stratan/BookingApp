@@ -2,6 +2,7 @@
 const create = require('./adminEmployeeCreate');
 const update = require('./adminEmployeeUpdate');
 const publicView = require('./publicEmployeeView');
+const adminView = require('./adminEmployeeView');
 
 module.exports.employeeController = async (event, context, callback) => {
     switch (event.field) {
@@ -15,6 +16,10 @@ module.exports.employeeController = async (event, context, callback) => {
         }
         case 'publicEmployeeView': {
             await publicView.publicEmployeeView(event, context, callback);
+            break;
+        }
+        case 'adminEmployeeView': {
+            await adminView.adminEmployeeView(event, context, callback);
             break;
         }
         default: {
