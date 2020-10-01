@@ -24,7 +24,17 @@ async function adminEmployeeUpdate(event, context, callback) {
         }).promise();
 
         // If employee already have bookings he cant be updated
-        // This feature will be added when publicBookingCreate will be modified to use employees
+        const bookings = await db.query({
+            TableName: process.env.BOOKING_TABLE,
+            IndexName: 'employeeId-index',
+            KeyConditionExpression: 'employeeId = :a',
+            ExpressionAttributeValues: {
+                ':a': request.employeeId
+            }
+        }).promise();
+
+        if(bookings.Items.length > 0)
+            return callback(utils.newError('Employee cant be updated because existing bookings'), null);
 
         if (!employee.Item) {
             return callback(utils.newError('Employee with provided ID not found'), null);
@@ -124,7 +134,7 @@ async function adminEmployeeUpdate(event, context, callback) {
                 ReturnValues: "ALL_NEW"
             }).promise();
         }
-            
+
         return callback(null, 'Employee updated');
     }
     catch (error) {

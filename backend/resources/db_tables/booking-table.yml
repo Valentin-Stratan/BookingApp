@@ -10,6 +10,8 @@ Resources:
           AttributeType: S
         - AttributeName: companyId
           AttributeType: S
+        - AttributeName: employeeId
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -28,6 +30,17 @@ Resources:
         - IndexName: booking-test-companyId-index
           KeySchema:
             - AttributeName: companyId
+              KeyType: HASH
+            - AttributeName: id
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL 
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: employeeId-index
+          KeySchema:
+            - AttributeName: employeeId
               KeyType: HASH
             - AttributeName: id
               KeyType: RANGE

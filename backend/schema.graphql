@@ -13,7 +13,7 @@ type Mutation {
 	adminCompanyUpdate(companyId: ID! name: String description: String logo: String ): company!
 	adminCompanyDelete(companyId: ID! ): String!
 
-	publicBookingCreate(companyId: ID serviceId: ID slot: String clientName: String clientPhone: String clientEmail: String): String!
+	publicBookingCreate(employeeId: ID serviceId: ID! slot: String! clientName: String! clientPhone: String! clientEmail: String!): String!
 	publicBookingDelete(bookingId: ID!): String!
 
 	adminEmployeeUpdate(employeeId: ID! serviceId: ID first_name: String last_name: String email: String profile_image: String start_time: String finish_time: String): String!
