@@ -33,8 +33,10 @@ async function adminEmployeeUpdate(event, context, callback) {
             }
         }).promise();
 
-        if(bookings.Items.length > 0)
-            return callback(utils.newError('Employee cant be updated because existing bookings'), null);
+        if(bookings.Items.length > 0) {
+            if(request.serviceId || request.email || request.start_time || request.finish_time)
+                return callback(utils.newError('Only first_name, last_name and profile picture can be updated because of existing bookings'), null);
+        }
 
         if (!employee.Item) {
             return callback(utils.newError('Employee with provided ID not found'), null);
