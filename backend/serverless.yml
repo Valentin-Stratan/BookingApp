@@ -23,6 +23,8 @@ functions:
   - ${file(resources/functions/publicBookingController-function.yml)}
   # Employee controller
   - ${file(resources/functions/adminEmployeeController-function.yml)}
+  # Review controller
+  - ${file(resources/functions/publicReviewController-function.yml)}
 
 custom:
   # AppSync setup
@@ -41,6 +43,7 @@ custom:
       - ${file(resources/appsync/dataSources/adminCompanyLambdaFunction.yml)}
       - ${file(resources/appsync/dataSources/publicBookingLambdaFunction.yml)}
       - ${file(resources/appsync/dataSources/adminEmployeeLambdaFunction.yml)}
+      - ${file(resources/appsync/dataSources/publicReviewLambdaFunction.yml)}
     # Mapping templates
     mappingTemplates:
       # Admin authentication mapping templates
@@ -71,7 +74,9 @@ custom:
       - ${file(resources/appsync/mappingTemplates/publicEmployeeView.yml)}
       - ${file(resources/appsync/mappingTemplates/adminEmployeeView.yml)}
       - ${file(resources/appsync/mappingTemplates/adminEmployeeDelete.yml)}
-      
+      # Public Review mapping templates
+      - ${file(resources/appsync/mappingTemplates/publicReviewCreate.yml)}
+
 resources:
   # Cognito setup
   - ${file(resources/cognito/cognito-setup.yml)}
@@ -95,6 +100,8 @@ resources:
   - ${file(resources/db_tables/booking-table.yml)}
   # employees table 
   - ${file(resources/db_tables/employee-table.yml)}
+  # reviews table 
+  - ${file(resources/db_tables/review-table.yml)}
 
   # ---------- S3 bucket ----------
   - ${file(resources/s3-buckets/company-logo-bucket.yml)}

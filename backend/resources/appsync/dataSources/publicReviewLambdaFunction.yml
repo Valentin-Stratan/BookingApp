@@ -1,0 +1,5 @@
+- type: AWS_LAMBDA
+  name: awsReviewLambdaDataSource
+  config:
+    lambdaFunctionArn: { Fn::GetAtt: [PublicReviewControllerLambdaFunction, Arn] }
+    serviceRoleArn: { Fn::GetAtt: [cognitoAppLambdaServiceRole, Arn] }

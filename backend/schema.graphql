@@ -19,6 +19,8 @@ type Mutation {
 	adminEmployeeUpdate(employeeId: ID! serviceId: ID first_name: String last_name: String email: String profile_image: String start_time: String finish_time: String): String!
 	adminEmployeeCreate(serviceId: ID! first_name: String! last_name: String! email: String! profile_image: String! start_time: String! finish_time: String!): employee!
 	adminEmployeeDelete(employeeId: ID!): String!
+
+	publicReviewCreate(employeeId: ID! clientName: String! stars: Int! reviewText: String!): review!
 }
 
 type Query {
@@ -43,6 +45,14 @@ type bookingViewAll {
 type bookingView {
 	company: company!
 	bookings: [booking]!
+}
+
+type review {
+	id: ID!
+	employeeId: ID!
+	clientName: String!
+	stars: Int!
+	reviewText: String!
 }
 
 type employee {
