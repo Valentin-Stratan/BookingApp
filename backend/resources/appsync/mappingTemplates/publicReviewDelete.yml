@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsReviewLambdaDataSource
+  type: Mutation
+  field: publicReviewDelete
+  request: "publicReviewDelete-request.txt"
+  response: "common-response.txt"

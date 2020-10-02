@@ -43,7 +43,7 @@ async function publicReviewUpdate(event, context, callback) {
         const ExpressionAttributeValues = {};
 
         for (const property in request) {
-            if (property != 'companyId' && property != 'logo') {
+            if (property != 'reviewId') {
                 updateExpression += ` #${property} = :${property} ,`;
                 ExpressionAttributeNames['#' + property] = property;
                 ExpressionAttributeValues[':' + property] = request[property];
