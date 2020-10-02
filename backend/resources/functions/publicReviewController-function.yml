@@ -1,0 +1,9 @@
+publicReviewController:
+  handler: review/review-handler.reviewController
+  iamRoleStatementsName: public-review-lambda-function-execution-role
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+        - ses:*
+      Resource: "*"

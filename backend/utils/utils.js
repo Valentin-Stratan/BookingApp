@@ -1,6 +1,8 @@
 const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const AWS = require('aws-sdk');
 const SES = new AWS.SES();
+const filterWords = ['mere', 'pointless', 'wtf'];
+
 
 module.exports = {
     mailFormat: mailFormat,
@@ -37,5 +39,20 @@ module.exports = {
                 return false;
         }
         return true;
-    }
+    },
+
+    censor: function censor(string, filters) {
+        // "i" is to ignore case and "g" for global "|" for OR match
+        var regex = new RegExp(filters.join("|"), "gi");
+        return string.replace(regex, function (match) {
+            //replace each letter with a star
+            var stars = '';
+            for (var i = 0; i < match.length; i++) {
+                stars += '*';
+            }
+            return stars;
+        });
+    },
+    
+    filterWords: filterWords
 }
