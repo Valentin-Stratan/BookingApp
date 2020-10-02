@@ -1,6 +1,7 @@
 'use strict';
 const create = require('./publicReviewCreate');
 const view = require('./publicReviewView');
+const update = require('./publicReviewUpdate');
 
 module.exports.reviewController = async (event, context, callback) => {
     switch (event.field) {
@@ -10,6 +11,10 @@ module.exports.reviewController = async (event, context, callback) => {
         }
         case 'publicReviewView': {
             await view.publicReviewView(event, context, callback);
+            break;
+        }
+        case 'publicReviewUpdate': {
+            await update.publicReviewUpdate(event, context, callback);
             break;
         }
         default: {

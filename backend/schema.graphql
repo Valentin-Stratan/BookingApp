@@ -21,6 +21,7 @@ type Mutation {
 	adminEmployeeDelete(employeeId: ID!): String!
 
 	publicReviewCreate(employeeId: ID! clientName: String! stars: Int! reviewText: String!): review!
+	publicReviewUpdate(reviewId: ID! clientName: String! stars: Int reviewText: String): review!
 }
 
 type Query {
