@@ -35,6 +35,8 @@ type Query {
 
 	publicEmployeeView(serviceId: ID!): [employee]!
 	adminEmployeeView(companyId: ID!): [employee]!
+
+	publicReviewView(employeeId: ID!): [review]!
 }
 
 type bookingViewAll {

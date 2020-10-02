@@ -76,6 +76,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/adminEmployeeDelete.yml)}
       # Public Review mapping templates
       - ${file(resources/appsync/mappingTemplates/publicReviewCreate.yml)}
+      - ${file(resources/appsync/mappingTemplates/publicReviewView.yml)}
 
 resources:
   # Cognito setup
