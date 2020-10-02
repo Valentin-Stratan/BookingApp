@@ -78,6 +78,7 @@ custom:
       - ${file(resources/appsync/mappingTemplates/publicReviewCreate.yml)}
       - ${file(resources/appsync/mappingTemplates/publicReviewView.yml)}
       - ${file(resources/appsync/mappingTemplates/publicReviewUpdate.yml)}
+      - ${file(resources/appsync/mappingTemplates/publicReviewDelete.yml)}
 
 resources:
   # Cognito setup

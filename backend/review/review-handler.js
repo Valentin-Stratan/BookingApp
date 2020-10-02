@@ -2,6 +2,7 @@
 const create = require('./publicReviewCreate');
 const view = require('./publicReviewView');
 const update = require('./publicReviewUpdate');
+const remove = require('./publicReviewDelete');
 
 module.exports.reviewController = async (event, context, callback) => {
     switch (event.field) {
@@ -15,6 +16,10 @@ module.exports.reviewController = async (event, context, callback) => {
         }
         case 'publicReviewUpdate': {
             await update.publicReviewUpdate(event, context, callback);
+            break;
+        }
+        case 'publicReviewDelete': {
+            await remove.publicReviewDelete(event, context, callback);
             break;
         }
         default: {
