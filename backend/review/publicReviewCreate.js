@@ -29,7 +29,7 @@ async function publicReviewCreate(event, context, callback) {
             return callback(utils.newError('Provided name is too long'), null);
 
         // validate stars
-        if(request.stars > 5 && request.stars < 1)
+        if(request.stars > 5 || request.stars < 1)
             return callback(utils.newError('Number of stars should be between 1 and 5'), null);
 
 

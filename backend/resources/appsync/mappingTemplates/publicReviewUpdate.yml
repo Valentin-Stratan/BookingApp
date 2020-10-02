@@ -1,0 +1,6 @@
+# Admin sign-up
+- dataSource: awsReviewLambdaDataSource
+  type: Mutation
+  field: publicReviewUpdate
+  request: "publicReviewUpdate-request.txt"
+  response: "common-response.txt"
