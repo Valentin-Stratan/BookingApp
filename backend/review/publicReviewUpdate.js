@@ -24,6 +24,10 @@ async function publicReviewUpdate(event, context, callback) {
         if (!review.Item)
             return callback(utils.newError('Unable to find review with provided ID'), null);
 
+        // validate client name
+        if(request.clientName != review.Item.clientName)
+            return callback(utils.newError('Wrong client name'), null);
+
          // validate stars
          if(request.stars && (request.stars > 5 || request.stars < 1))
             return callback(utils.newError('Number of stars should be between 1 and 5'), null);
