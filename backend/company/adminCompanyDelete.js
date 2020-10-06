@@ -21,6 +21,18 @@ async function adminCompanyDelete(event, context, callback) {
         if (!company)
             return callback(utils.newError('Company with provided ID not found!!!'), null);
 
+        const bookings = await db.query({
+            TableName: process.env.BOOKING_TABLE,
+            IndexName: "booking-test-companyId-index",
+            KeyConditionExpression: "companyId = :a",
+            ExpressionAttributeValues: {
+                ":a": company.Item.id
+            }
+        }).promise();
+
+        if(bookings.Items.length > 0)
+            return callback(utils.newError('Fail to delete company, existing bookings'), null);
+
         // get all the services associated with the provided company
         const services = await db.query({
             TableName: process.env.SERVICE_TABLE,
