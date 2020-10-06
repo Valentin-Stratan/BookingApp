@@ -46,7 +46,8 @@ async function publicBookingCreate(event, context, callback) {
                 slot: date.toString(),
                 clientName: request.clientName,
                 clientEmail: request.clientEmail,
-                clientPhone: request.clientPhone
+                clientPhone: request.clientPhone,
+                companyId: service.Item.companyId
             }
         }
 

@@ -20,7 +20,7 @@ async function adminPasswordRecover(event, context, callback) {
         //Check if admin with this email exists in database
         const admin = await db.query({
             TableName: process.env.ADMINS_TABLE,
-            IndexName: "email-index-copy",
+            IndexName: "email-index",
             KeyConditionExpression: "email = :a",
             ExpressionAttributeValues: {
                 ":a": request.email

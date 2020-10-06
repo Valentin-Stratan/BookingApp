@@ -38,7 +38,7 @@ async function adminBookingView(event, context, callback) {
         for (let i = 0; i < companies.Items.length; i++) {
             const response = await db.query({
                 TableName: process.env.BOOKING_TABLE,
-                IndexName: "booking-companyId-index",
+                IndexName: "booking-test-companyId-index",
                 KeyConditionExpression: "companyId = :a",
                 ExpressionAttributeValues: {
                     ":a": companies.Items[i].id

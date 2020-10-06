@@ -5,8 +5,8 @@ type Mutation {
 	adminPasswordConfirm(email: String! confirmationCode: String! newPassword: String!): String!
 	adminResetPassword(adminId: String! currentPass: String! newPass: String!): String!
 
-	adminServiceCreate(companyId: ID! name: String! description: String! duration: String! spaces: Int! price: Float!): service!
-	adminServiceUpdate(serviceId: String! name: String description: String duration: String spaces: Int price: Float): service!
+	adminServiceCreate(companyId: ID! name: String! description: String! duration: String! price: Float!): service!
+	adminServiceUpdate(serviceId: String! name: String description: String duration: String price: Float): service!
 	adminServiceDelete(serviceId: String!): String!
 
 	adminCompanyCreate(name: String! description: String! logo: String! adminId: String!): company!
@@ -26,7 +26,7 @@ type Mutation {
 }
 
 type Query {
-	adminList: String!
+	adminList: [admin]!
 	adminLogin(email: String! password: String!): String!
 	adminServiceViewAll(companyId: String!): [service]!
 
@@ -94,7 +94,6 @@ type service {
 	name: String!
 	description: String!
 	duration: String!
-	spaces: String!
 	price: String!
 	companyId: ID
 }
